@@ -8,10 +8,13 @@
     "handle": "glatitude",
     "author": "nerds",
     "update": "auto",
-    "hidden": true,
     "github": "https://github.com/LockerProject/Locker",
     "type": "connector",
     "static": "false",
+    "oauthSize": {
+        "width": 960,
+        "height": 540
+    },
     "url": ""
   },
   "engines": {

@@ -36,15 +36,22 @@ require('graceful-fs');
 
 
 // This lconfig stuff has to come before any other locker modules are loaded!!
+console.log('got here!');
 var lconfig = require('lconfig');
 lconfig.load((process.argv[2] == '--config'? process.argv[3] : 'Config/config.json'));
+
+console.log(lconfig.lockerDir);
 
 if(!path.existsSync(path.join(lconfig.lockerDir, 'Config', 'apikeys.json'))) {
     console.error('You must have an apikeys.json file in the Config directory. See the Config/apikeys.json.example file');
     process.exit(1);
 }
 
+console.log("1");
+
 fs.writeFileSync(__dirname + '/Logs/locker.pid', "" + process.pid);
+
+console.log("2");
 
 var logger = require("logger");
 logger.info('process id:' + process.pid);
@@ -57,10 +64,19 @@ var lcrypto = require("lcrypto");
 var registry = require(__dirname + "/Ops/registry.js");
 var lmongo = require('lmongo');
 
+console.log("3");
+
+
 var buildInfo = fs.readFileSync(path.join(lconfig.lockerDir, 'build.json'));
 logger.info("Starting locker with build info:" + buildInfo);
 
+console.log("4");
+
+
 if(process.argv.indexOf("offline") >= 0) syncManager.setExecuteable(false);
+
+console.log("5");
+
 
 if(lconfig.lockerHost != "localhost" && lconfig.lockerHost != "127.0.0.1") {
     logger.warn('if I\'m running on a public IP I needs to have password protection,' + // uniquely self (de?)referential? lolz!
@@ -68,6 +84,8 @@ if(lconfig.lockerHost != "localhost" && lconfig.lockerHost != "127.0.0.1") {
                 ' it\'s apparently still not implemented :)\n\n');
 }
 var shuttingDown_ = false;
+
+console.log("6");
 
 var mongoProcess;
 path.exists(lconfig.me + '/' + lconfig.mongo.dataDir, function(exists) {
@@ -84,9 +102,9 @@ path.exists(lconfig.me + '/' + lconfig.mongo.dataDir, function(exists) {
     var mongoOptions = ['--dbpath',
       lconfig.lockerDir + '/' + lconfig.me + '/' + lconfig.mongo.dataDir,
       '--port', lconfig.mongo.port].concat(lconfig.mongo.options);
-
+    console.log("7");
     mongoProcess = spawn('mongod', mongoOptions);
-
+    console.log("8");
     var mongoStdout = carrier.carry(mongoProcess.stdout);
     var waitingForMongo = true;
     mongoStdout.on('line', function (line) {
@@ -96,11 +114,12 @@ path.exists(lconfig.me + '/' + lconfig.mongo.dataDir, function(exists) {
           lmongo.connect(checkKeys);
         }
     });
+    console.log("9");
     var mongoStderr = carrier.carry(mongoProcess.stderr);
     mongoStderr.on('line', function (line) {
         logger.error('[mongo] ' + line);
     });
-
+    console.log("10");
     mongoProcess.on('exit', function(code, signal) {
         mongoProcess = null;
         if (shuttingDown_) {
@@ -112,6 +131,7 @@ path.exists(lconfig.me + '/' + lconfig.mongo.dataDir, function(exists) {
     });
 });
 
+console.log("11");
 
 function checkKeys() {
     lcrypto.generateSymKey(function(hasKey) {
@@ -129,6 +149,7 @@ function checkKeys() {
     });
 }
 
+console.log("12");
 function finishStartup() {
     // get current git revision if git is available
     var gitHead = spawn('git', ['rev-parse', '--verify', 'HEAD']);

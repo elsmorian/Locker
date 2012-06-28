@@ -11,7 +11,7 @@ import sys
 def loadJsonFile(filename):
     try:
         fd = open(filename, "r")
-        meData = json.load(fd)
+        meData = json.loads(fd)
         fd.close()
         return meData
     except Exception, E:
@@ -19,7 +19,7 @@ def loadJsonFile(filename):
 
 def saveJsonFile(filename, jsonData):
     fd = open(filename, "w")
-    json.dump(jsonData, fd)
+    json.dumps(jsonData, fd)
     fd.close()
 
 def loadMeData():

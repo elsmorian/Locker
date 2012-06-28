@@ -17,7 +17,7 @@ var express = require('express')
   , lconfig = require('lconfig.js')
   , github = false
   , githubLogin = ''
-  , form = require('connect-form')
+  //, form = require('connect-form')
   , uistate = require(__dirname + '/uistate')
   , profileImage = 'img/default-profile.png'
   , path = require('path')
@@ -49,7 +49,7 @@ app.configure(function() {
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.bodyParser());
-  app.use(form({ keepExtensions: true }));
+  //app.use(form({ keepExtensions: true }));
   app.use(express.static(__dirname + '/static'));
   app.dynamicHelpers({
     dashboard: function(req, res) {

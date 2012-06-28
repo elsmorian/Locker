@@ -37,7 +37,8 @@ var setUpWelcome = function() {
     }
   });
 
-  if (hasAuthedOne || !hasTwitterOrFacebook) showAuthedState();
+  //if (hasAuthedOne || !hasTwitterOrFacebook) showAuthedState();
+  showAuthedState();
 };
 
 var initLearnMore = function() {

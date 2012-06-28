@@ -99,7 +99,8 @@ exports.app = function (app) {
 function getConnectors(req, res) {
     var connectors = {};
     // get all connectors from the registry
-    var url = burrowBase + "/registry/_design/connectors/_view/Connectors";
+    //var url = burrowBase + "/registry/_design/connectors/_view/Connectors";
+    var url = "http://www.cl.cam.ac.uk/~cce25/registry/connectors.json"
     request.get({uri:url, json:true}, function(err, ret, js){
         if(js && js.rows && lutil.is('Array', js.rows)) js.rows.forEach(function(conn){
             // if api key
